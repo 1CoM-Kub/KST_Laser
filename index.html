@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โปรแกรมคำนวณราคางานเลเซอร์ v2.0.12 (แก้บั๊กค่าประกอบไม่คูณ qty + ตารางค่าประกอบตู้โชว์เต็มรูปแบบ)</title>
+    <title>โปรแกรมคำนวณราคางานเลเซอร์ v2.0.13 (ปัดหน้ากว้าง 2 สเต็ป 600/1220มม. กลุ่ม 1.5-3มม.)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -984,10 +984,17 @@
         let shouldBump = info.forceMinRoll || (max_dim > info.threshold && max_dim > 0);
 
         if (shouldBump) {
-            charge_w = 1220;
-            // ถ้าด้านยาวกว่าเกินหน้ากว้างสต๊อก (1220มม.) วางสอดหน้ากว้างไม่ได้ ต้องคิดตามด้านยาวจริง
-            // ถ้าไม่เกิน ก็เลือกด้านสั้นมาคิดความยาว (วางด้านยาวสอดในหน้ากว้าง 1220 แทน เพื่อกินเนื้อแผ่นน้อยที่สุด)
-            charge_l = (max_dim > 1220) ? max_dim : min_dim;
+            // กลุ่มความหนาที่บังคับหน้ากว้างขั้นต่ำเสมอ (1.5-3มม.) คิดหน้ากว้างเป็นขั้นบันได 2 สเต็ป ตามด้านยาวสุดของชิ้นงาน:
+            // ด้านยาวสุด ≤600มม. → คิดหน้ากว้างแค่ 600มม. (ไม่ต้องเต็มม้วน) / เกิน 600มม. → คิดเต็มหน้ากว้าง 1220มม.เหมือนเดิม
+            // กลุ่มอื่น (B/C ที่เกินเกณฑ์ขนาด) ยังคงคิดเต็มหน้ากว้าง 1220มม.เสมอเหมือนเดิม ไม่มีสเต็ปนี้
+            if (info.forceMinRoll && max_dim > 0 && max_dim <= 600) {
+                charge_w = 600;
+            } else {
+                charge_w = 1220;
+            }
+            // ถ้าด้านยาวกว่าเกินหน้ากว้างที่คิด วางสอดหน้ากว้างไม่ได้ ต้องคิดตามด้านยาวจริง
+            // ถ้าไม่เกิน ก็เลือกด้านสั้นมาคิดความยาว (วางด้านยาวสอดในหน้ากว้างแทน เพื่อกินเนื้อแผ่นน้อยที่สุด)
+            charge_l = (max_dim > charge_w) ? max_dim : min_dim;
             if (info.minLen > 0) {
                 charge_l = Math.max(charge_l, info.minLen);
             }
