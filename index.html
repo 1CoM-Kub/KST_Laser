@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โปรแกรมคำนวณราคางานเลเซอร์ v3.5.0 (ปรับหน้าตา: ระบบสีมีความหมาย + ปุ่มเลือกแทน dropdown + พับส่วนที่ไม่ค่อยใช้)</title>
+    <title>โปรแกรมคำนวณราคางานเลเซอร์ v3.5.1 (ย่อป้ายช่องกรอกหมวดบานพับ/ที่จับ/เส้นค้ำ + เปลี่ยนชื่อหมวดค่าบริการ)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -194,6 +194,7 @@
             background: rgba(108,182,240,0.06); padding: 13px; border-radius: 8px; margin-top: 12px;
             border: 1px solid rgba(108,182,240,0.25);
         }
+        .rate-group-name { font-size: 0.82rem; font-weight: 600; color: var(--ink); margin: 10px 0 5px 2px; }
         .rate-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
         .rate-cell { flex: 1 1 100px; text-align: center; }
         .rate-cell label { display: block; font-size: 0.78rem; color: var(--ink-dim); margin-bottom: 4px; font-weight: 500; }
@@ -975,58 +976,61 @@
             </div>
 
             <div class="extras-sub">
-                <h4>🔧 บานพับ / ที่จับ-หมุด / เส้นค้ำมุม</h4>
+                <h4>🔧 บานพับ / ที่จับ-หมุด / เส้นค้ำมุม (ต่อชิ้น)</h4>
+                <div class="rate-group-name">บานพับ</div>
                 <div class="rate-row">
                     <div class="rate-cell">
-                        <label>จำนวนบานพับ (ต่อ 1 ชิ้น)</label>
+                        <label>จำนวน</label>
                         <input type="number" min="0" id="hingeQty" value="0" oninput="sanitizeNumberInput(this); calculate()">
                     </div>
                     <div class="rate-cell">
-                        <label>ต้นทุนตัวบานพับ (บาท/อัน)</label>
+                        <label>ต้นทุน</label>
                         <input type="number" min="0" id="hingeMaterialCost" value="0" oninput="sanitizeNumberInput(this); calculate()">
                     </div>
                     <div class="rate-cell">
-                        <label>ค่าแรงติดตั้ง (บาท/อัน)</label>
+                        <label>ค่าแรงติดตั้ง</label>
                         <input type="number" min="0" id="hingeRate" value="20" oninput="sanitizeNumberInput(this); calculate()">
                     </div>
                     <div class="rate-cell">
-                        <label style="color: var(--stop); font-weight: 700;">ราคารวมบานพับ (บาท)</label>
+                        <label style="color: var(--stop); font-weight: 700;">ราคารวม</label>
                         <input type="number" min="0" id="hingeCostOverride" placeholder="อัตโนมัติ" oninput="sanitizeNumberInput(this); calculate()">
                     </div>
                 </div>
+                <div class="rate-group-name">ที่จับ-หมุด</div>
                 <div class="rate-row">
                     <div class="rate-cell">
-                        <label>จำนวนที่จับ/หมุด (ต่อ 1 ชิ้น)</label>
+                        <label>จำนวน</label>
                         <input type="number" min="0" id="handleQty" value="0" oninput="sanitizeNumberInput(this); calculate()">
                     </div>
                     <div class="rate-cell">
-                        <label>ต้นทุนตัวที่จับ/หมุด (บาท/อัน)</label>
+                        <label>ต้นทุน</label>
                         <input type="number" min="0" id="handleMaterialCost" value="0" oninput="sanitizeNumberInput(this); calculate()">
                     </div>
                     <div class="rate-cell">
-                        <label>ค่าแรงติดตั้ง (บาท/อัน)</label>
+                        <label>ค่าแรงติดตั้ง</label>
                         <input type="number" min="0" id="handleRate" value="20" oninput="sanitizeNumberInput(this); calculate()">
                     </div>
                     <div class="rate-cell">
-                        <label style="color: var(--stop); font-weight: 700;">ราคารวมที่จับ/หมุด (บาท)</label>
+                        <label style="color: var(--stop); font-weight: 700;">ราคารวม</label>
                         <input type="number" min="0" id="handleCostOverride" placeholder="อัตโนมัติ" oninput="sanitizeNumberInput(this); calculate()">
                     </div>
                 </div>
+                <div class="rate-group-name">เส้นค้ำมุม</div>
                 <div class="rate-row">
                     <div class="rate-cell">
-                        <label>จำนวนเส้นค้ำมุม (ต่อ 1 ชิ้น)</label>
+                        <label>จำนวน</label>
                         <input type="number" min="0" id="braceQty" value="0" oninput="sanitizeNumberInput(this); calculate()">
                     </div>
                     <div class="rate-cell">
-                        <label>ต้นทุนเส้นค้ำมุม (บาท/เส้น)</label>
+                        <label>ต้นทุน</label>
                         <input type="number" min="0" id="braceMaterialCost" value="0" oninput="sanitizeNumberInput(this); calculate()">
                     </div>
                     <div class="rate-cell">
-                        <label>ค่าแรงติดตั้ง (บาท/เส้น)</label>
+                        <label>ค่าแรงติดตั้ง</label>
                         <input type="number" min="0" id="braceRate" value="20" oninput="sanitizeNumberInput(this); calculate()">
                     </div>
                     <div class="rate-cell">
-                        <label style="color: var(--stop); font-weight: 700;">ราคารวมเส้นค้ำมุม (บาท)</label>
+                        <label style="color: var(--stop); font-weight: 700;">ราคารวม</label>
                         <input type="number" min="0" id="braceCostOverride" placeholder="อัตโนมัติ" oninput="sanitizeNumberInput(this); calculate()">
                     </div>
                 </div>
@@ -1035,7 +1039,7 @@
         </details>
 
         <details class="section">
-            <summary>ค่าบริการเพิ่มเติมอื่นๆ<span class="sum-chip" id="chipServices"></span></summary>
+            <summary>ค่าบริการอื่นๆ และ ค่าเผื่อเศษ<span class="sum-chip" id="chipServices"></span></summary>
             <div class="form-group">
                 <label>ค่าประกอบ/ติดกาว/บานพับ (บาท)</label>
                 <input type="number" min="0" id="assemblyFee" placeholder="ปล่อยว่าง = ใช้ราคาแนะนำ (งานกล่อง) หรือ 0" oninput="sanitizeNumberInput(this); calculate()">
